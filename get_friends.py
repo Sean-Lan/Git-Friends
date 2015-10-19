@@ -59,25 +59,27 @@ def breath_first_search(login_name, page_size, auth, stop_count,
         queue.append(login_name)
         friends_shelve['current_count'] += 1
     while True:
-        if friends_shelve['current_count'] > stop_count:
+        if friends_shelve['current_count'] > stop_count or len(queue) == 0:
             break
         user_name = queue.popleft()
         if user_name in data:                       # Visited before
             continue
+        queue.appendleft(user_name)                 # In case failed
         print 'No.', friends_shelve['current_count'], '\t',
         print 'USER:', user_name
         friends = get_friends(user_name, page_size, auth)
         data[user_name] = friends
         queue.extend(friend for friend in friends if friend not in data)
         friends_shelve['current_count'] += 1
+        queue.popleft()                             # Sure success
     friends_shelve.close()
 
 
 if __name__ == '__main__':
     page_size = 100
-    # auth = ('your login name', 'your password')
+    # auth = ('username', 'password')
     auth = ''
     login_name = 'Sean-Lan'
-    stop_count = 15
+    stop_count = 2000
     shelve_file = 'git_friends'
     breath_first_search(login_name, page_size, auth, stop_count, shelve_file)
