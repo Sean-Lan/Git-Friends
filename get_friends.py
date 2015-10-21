@@ -1,13 +1,14 @@
 #!env python
 import requests
 import shelve
+import time
 from collections import deque
 
 GIT_FOLLOWER_URL = 'https://api.github.com/users/{login}/followers'
 GIT_FOLLOWING_URL = 'https://api.github.com/users/{login}/following'
 
 
-def get_template(login_name, page_size, auth, URL_TEMPLATE):
+def get_template(login_name, page_size, auth, URL_TEMPLATE, sleep_time=1):
     """Common function for get_follow and get_following"""
     return_list = []
     url = URL_TEMPLATE.format(login=login_name)
@@ -15,11 +16,15 @@ def get_template(login_name, page_size, auth, URL_TEMPLATE):
     r = requests.get(url, params=params, auth=auth)
     while True:
         results = r.json()
+        print '\t', '-' * 40
+        print '\t', 'X-RateLimit-Limit:', r.headers['X-RateLimit-Limit']
+        print '\t', 'X-RateLimit-Remaining:', r.headers['X-RateLimit-Remaining']
         return_list.extend(result['login'] for result in results)
+        time.sleep(1)
 
         # handle pagination
         if 'next' not in r.links: break
-        r = requests.get(r.links['next']['url'])
+        r = requests.get(r.links['next']['url'], auth=auth)
     return return_list
 
 
@@ -77,7 +82,7 @@ def breath_first_search(login_name, page_size, auth, stop_count,
 
 if __name__ == '__main__':
     page_size = 100
-    # auth = ('username', 'password')
+    # auth = ('yourname', 'password')
     auth = ''
     login_name = 'Sean-Lan'
     stop_count = 2000
