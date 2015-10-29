@@ -49,7 +49,7 @@ def breath_first_search(login_name, page_size, auth, stop_count,
                         shelve_file):
     """Use breath first search to construct the friendship of github and pickle
     it into `shelve_file`
-    The shelve_file has a queue object to store the search state, and a 
+    The shelve_file has a queue object to store the search state, and a
     currenct_count to count the users already retreived. Therefore, you can call
     this function any times you want.
     *NOTE*: github has a invokation limit policy: 5000 times per hour.
@@ -72,17 +72,23 @@ def breath_first_search(login_name, page_size, auth, stop_count,
         queue.appendleft(user_name)                 # In case failed
         print 'No.', friends_shelve['current_count'], '\t',
         print 'USER:', user_name
-        friends = get_friends(user_name, page_size, auth)
-        data[user_name] = friends
-        queue.extend(friend for friend in friends if friend not in data)
-        friends_shelve['current_count'] += 1
-        queue.popleft()                             # Sure success
+        try:
+            friends = get_friends(user_name, page_size, auth)
+            data[user_name] = friends
+            queue.extend(friend for friend in friends if friend not in data)
+            friends_shelve['current_count'] += 1
+        except TypeError:                           # Dirty data or request failed
+            print 'No.', friends_shelve['current_count'], '\t',
+            print 'USER:', user_name, '\t', 'Failed.'
+            pass
+        finally:
+            queue.popleft()                         # Sure success
     friends_shelve.close()
 
 
 if __name__ == '__main__':
     page_size = 100
-    # auth = ('yourname', 'password')
+    # auth = ('your name', 'your password')
     auth = ''
     login_name = 'Sean-Lan'
     stop_count = 2000
