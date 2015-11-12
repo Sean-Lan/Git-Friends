@@ -54,7 +54,7 @@ def breath_first_search(login_name, page_size, auth, stop_count,
     this function any times you want.
     *NOTE*: github has a invokation limit policy: 5000 times per hour.
     """
-    friends_shelve = shelve.open('git_friends', writeback=True)
+    friends_shelve = shelve.open(shelve_file, writeback=True)
     friends_shelve.setdefault('queue', deque())
     friends_shelve.setdefault('current_count',0)
     friends_shelve.setdefault('data', {})
@@ -86,6 +86,18 @@ def breath_first_search(login_name, page_size, auth, stop_count,
     friends_shelve.close()
 
 
+def data_cleaning(adjacent_table):
+    """Remove all the node not in the existing node list."""
+    cleaned_table = {}
+    for node in adjacent_table:
+        node_neighbours = []
+        for neighbour in adjacent_table[node]:
+            if neighbour in adjacent_table:
+                node_neighbours.append(neighbour)
+            cleaned_table[node] = node_neighbours
+    return cleaned_table
+
+
 if __name__ == '__main__':
     page_size = 100
     # auth = ('your name', 'your password')
@@ -94,3 +106,10 @@ if __name__ == '__main__':
     stop_count = 2000
     shelve_file = 'git_friends'
     breath_first_search(login_name, page_size, auth, stop_count, shelve_file)
+
+    # Perform data cleaning operation.
+    # Remove the friends not in the data set.
+    cleaned_shelve_file = 'cleaned_friends'
+    friends_shelve = shelve.open(shelve_file)
+    cleaned_shelve = shelve.open(cleaned_shelve_file)
+    cleaned_shelve['data'] = data_cleaning(friends_shelve['data'])
