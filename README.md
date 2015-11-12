@@ -9,7 +9,7 @@ Use GitHub API to crawl the friendship between developers.
 3. Set the **login_name** as the BFS(bread-first-search) starting point.
 4. Set the stop_account to the size you need.
 5. Run **get_friends.py**, and the cleaned friend relationship graph is saved in **cleaned_friends.db**
-6. You can terminate the program anytime you want, it will automatically resume the progress it has achieved. So don't worry about interruption. However, only the **stop_count** is met, the **cleaned_friends.db** will be generated.
+6. You can terminate the program anytime you want, it will automatically resume the progress it has achieved. So don't worry about interruption. However, only when the **stop_count** is met, the **cleaned_friends.db** will be generated.
 
 ## For those who just want to use the ready friendship data
 1. The *cleaned* data is store in **cleaned_friends.db**, and you can access it using `shelve` module:  
