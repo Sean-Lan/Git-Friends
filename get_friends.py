@@ -3,6 +3,10 @@ import requests
 import shelve
 import time
 from collections import deque
+try:
+    import cPickle as pickle
+except:
+    import pickle
 
 GIT_FOLLOWER_URL = 'https://api.github.com/users/{login}/followers'
 GIT_FOLLOWING_URL = 'https://api.github.com/users/{login}/following'
@@ -107,9 +111,8 @@ if __name__ == '__main__':
     shelve_file = 'git_friends.db'
     breath_first_search(login_name, page_size, auth, stop_count, shelve_file)
 
-    # Perform data cleaning operation.
-    # Remove the friends not in the data set.
-    cleaned_shelve_file = 'cleaned_friends.db'
+    # use pickle instead of shelve due to the
+    # portability issue.
     friends_shelve = shelve.open(shelve_file)
-    cleaned_shelve = shelve.open(cleaned_shelve_file)
-    cleaned_shelve['data'] = data_cleaning(friends_shelve['data'])
+    cleaned_friends = data_cleaning(friends_shelve['data'])
+    pickle.dump(cleaned_friends, open('cleaned_data', 'w'))
