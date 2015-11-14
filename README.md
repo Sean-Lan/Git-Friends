@@ -21,7 +21,6 @@ except:
 pickle_file = open('cleaned_data')  
 cleaned_friends = pickle.load(pickle_file)
 ```
-
 2. The starting point is my github account, i.e., Sean-Lan and the relationship graph is saved as adjacent table.
 
 ## About data cleaning
