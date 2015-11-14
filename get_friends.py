@@ -104,12 +104,12 @@ if __name__ == '__main__':
     auth = ''
     login_name = 'Sean-Lan'
     stop_count = 2000
-    shelve_file = 'git_friends'
+    shelve_file = 'git_friends.db'
     breath_first_search(login_name, page_size, auth, stop_count, shelve_file)
 
     # Perform data cleaning operation.
     # Remove the friends not in the data set.
-    cleaned_shelve_file = 'cleaned_friends'
+    cleaned_shelve_file = 'cleaned_friends.db'
     friends_shelve = shelve.open(shelve_file)
     cleaned_shelve = shelve.open(cleaned_shelve_file)
     cleaned_shelve['data'] = data_cleaning(friends_shelve['data'])
