@@ -35,6 +35,3 @@ After cleaning is:
 > C: [A, B]  
 
 Since D is not in {A, B, C}. We need data cleaning because we set the stop count, and some users in someone's friends list haven't been crawled down.
-
-
-
