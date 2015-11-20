@@ -98,7 +98,7 @@ def data_cleaning(adjacent_table):
         for neighbour in adjacent_table[node]:
             if neighbour in adjacent_table:
                 node_neighbours.append(neighbour)
-            cleaned_table[node] = node_neighbours
+        cleaned_table[node] = node_neighbours
     return cleaned_table
 
 
