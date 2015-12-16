@@ -12,7 +12,7 @@ GIT_FOLLOWER_URL = 'https://api.github.com/users/{login}/followers'
 GIT_FOLLOWING_URL = 'https://api.github.com/users/{login}/following'
 
 
-def get_template(login_name, page_size, auth, URL_TEMPLATE, sleep_time=1):
+def get_template(login_name, page_size, auth, URL_TEMPLATE, sleep_time=0.5):
     """Common function for get_follow and get_following"""
     return_list = []
     url = URL_TEMPLATE.format(login=login_name)
@@ -24,7 +24,7 @@ def get_template(login_name, page_size, auth, URL_TEMPLATE, sleep_time=1):
         print '\t', 'X-RateLimit-Limit:', r.headers['X-RateLimit-Limit']
         print '\t', 'X-RateLimit-Remaining:', r.headers['X-RateLimit-Remaining']
         return_list.extend(result['login'] for result in results)
-        time.sleep(1)
+        time.sleep(sleep_time)
 
         # handle pagination
         if 'next' not in r.links: break
@@ -104,11 +104,11 @@ def data_cleaning(adjacent_table):
 
 if __name__ == '__main__':
     page_size = 100
-    # auth = ('your name', 'your password')
+    # auth = ('your user name', 'your password')
     auth = ''
     login_name = 'Sean-Lan'
     stop_count = 2000
-    shelve_file = 'git_friends.db'
+    shelve_file = 'git_friends'
     breath_first_search(login_name, page_size, auth, stop_count, shelve_file)
 
     # use pickle instead of shelve due to the
