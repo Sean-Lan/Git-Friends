@@ -24,7 +24,7 @@ cleaned_friends = pickle.load(pickle_file)
 * The starting point is my github account, i.e. Sean-Lan, and the relationship graph is saved as adjacent table.
 
 ## About data cleaning
-Data cleaning is just removing the friends that not in the user list. Take the following graph as an example:
+Data cleaning is just removing the friends that not in the user list. Take the following graph as an example:  
 > A: [B, C, D]  
 > B: [A, C]  
 > C: [A, B] 
